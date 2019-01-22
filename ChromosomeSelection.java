@@ -5,20 +5,22 @@
  */
 package geneticalgorithm;
 
+
 import java.util.Random;
 
 /**
  * @author FAkinola
  */
-public class ChromosomeSelection {
+class ChromosomeSelection {
     double fitness;
-    int geneLength = 16;
-    int[] genes = new int[geneLength];
+    static int geneLength ;
+    int[] genes ;
     int boundd;
 
-    public ChromosomeSelection(int bound, int geneLength, boolean rastrigin) {
+    ChromosomeSelection(int bound, int geneLength, boolean rastrigin) {
         Random rn = new Random();
         boundd = bound;
+        ChromosomeSelection.geneLength = geneLength;
         genes = new int[geneLength];
         //Set genes randomly for each chromosome
         if (rastrigin) {
@@ -34,8 +36,9 @@ public class ChromosomeSelection {
         fitness = 0;
     }
 
-    public ChromosomeSelection(int bound,boolean rastrigin) {
+    ChromosomeSelection(int bound, boolean rastrigin) {
         Random rn = new Random();
+        genes = new int[geneLength];
         boundd = bound;
         //Set genes randomly for each chromosome
         if (rastrigin) {
@@ -52,10 +55,9 @@ public class ChromosomeSelection {
 
     /**
      * @param rastrigin
-     * @return
-     * converts the genes in a chromosome to a string
+     * @return converts the genes in a chromosome to a string
      */
-    public String getChromosome(boolean rastrigin) {
+    String getChromosome(boolean rastrigin) {
         String chromosome = "";
         if (rastrigin) {
             for (int i = 0; i < geneLength / 16; i++) {
@@ -65,19 +67,25 @@ public class ChromosomeSelection {
                 }
             }
         } else {
+            getChromosome();
+        }
+        return chromosome;
+    }/**
+     * @return converts the genes in a chromosome to a string
+     */
+    String getChromosome() {
+        String chromosome = "";
             for (int i = 0; i < geneLength; i++) {
                 chromosome += getGene(i);
             }
-        }
         return chromosome;
     }
 
 
     /**
-     * @return
-     * crafted from the aim of one max to have all genes as 1
+     * @return crafted from the aim of one max to have all genes as 1
      */
-    public double calcFitness() {
+    double calcFitness() {
 
         fitness = 0;
         for (int i = 0; i < geneLength; i++) {
@@ -89,11 +97,12 @@ public class ChromosomeSelection {
         return fitness;
     }
 
+
     /**
      * @return
      * grafted from the rastrigin equation
      */
-    public double calcFitnessRas() {
+   double calcFitnessRas() {
 
         fitness = 0;
         for (int i = 0; i < geneLength / 16; i++) {
@@ -103,11 +112,12 @@ public class ChromosomeSelection {
         return fitness;
     }
 
-    public int getGene(int index) {
+   
+    int getGene(int index) {
         return genes[index];
     }
 
-    public void setGene(int index, int value) {
+    void setGene(int index, int value) {
         genes[index] = value;
     }
 
