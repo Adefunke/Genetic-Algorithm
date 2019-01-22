@@ -10,15 +10,15 @@ import java.util.Random;
 /**
  * @author FAkinola
  */
-public class Population {
+class Population {
     ChromosomeSelection[] chromosomes;
-    double[] fitnessProb;
+    private double[] fitnessProb;
     double fittest = 0;
-    int maxFit;
+    private int maxFit;
     int populationSize = 0;
 
     //Initialize population
-    public void initializePopulation(int bound, int geneLength, boolean rastrigin, int popSize) {
+    void initializePopulation(int bound, int geneLength, boolean rastrigin, int popSize) {
         fitnessProb = new double[popSize];
         chromosomes = new ChromosomeSelection[popSize];
         populationSize = popSize;
@@ -29,31 +29,29 @@ public class Population {
 
     /**
      * @param index
-     * @param chromosome
-     * saves a chromosome that has probably undergone change or is new
+     * @param chromosome saves a chromosome that has probably undergone change or is new
      */
-    public void saveChromosomes(int index, ChromosomeSelection chromosome) {
+    void saveChromosomes(int index, ChromosomeSelection chromosome) {
         chromosomes[index] = chromosome;
     }
 
     /**
      * @param popSize
-     * @return
-     * randomly pick within the array
+     * @return randomly pick within the array
      */
-    public ChromosomeSelection randomlyPicked(int popSize) {
+    ChromosomeSelection randomlyPicked(int popSize) {
         return chromosomes[new Random().nextInt(popSize)];
     }
 
-    public ChromosomeSelection getChromosome(int index) {
+    ChromosomeSelection getChromosome(int index) {
         return chromosomes[index];
     }
 
     /**
      * @param rastrigin
-     * @return  fittest chromosome
+     * @return fittest chromosome
      */
-    public ChromosomeSelection getFittest(boolean rastrigin) {
+    ChromosomeSelection getFittest(boolean rastrigin) {
         if (!rastrigin) {
             maxFit = 0;
             for (int i = 0; i < chromosomes.length; i++) {
@@ -76,7 +74,7 @@ public class Population {
     /**
      * @return second fittest chromosome when requested for via elitism
      */
-    public ChromosomeSelection getSecondFittest() {
+    ChromosomeSelection getSecondFittest() {
         int maxFit2 = 0;
         for (int i = 0; i < chromosomes.length; i++) {
             if (chromosomes[maxFit2].fitness < chromosomes[i].fitness && i != maxFit) {
@@ -88,17 +86,16 @@ public class Population {
 
     /**
      * @param rastrigin
-     * @return
-     * Calculates the fitness of each chromosome
+     * @return Calculates the fitness of each chromosome
      */
 
-    public ChromosomeSelection calculateFitness(boolean rastrigin) {
+    ChromosomeSelection calculateFitness(boolean rastrigin) {
 
-        for (int i = 0; i < chromosomes.length; i++) {
+        for (ChromosomeSelection chromosome : chromosomes) {
             if (!rastrigin) {
-                chromosomes[i].calcFitness();
+                chromosome.calcFitness();
             } else {
-                chromosomes[i].calcFitnessRas();
+                chromosome.calcFitnessRas();
             }
         }
         return getFittest(rastrigin);
@@ -108,7 +105,7 @@ public class Population {
      * @param rastrigin
      * @return calculates the cumulative fitness of each member
      */
-    public double calculateCumulativeFitness(boolean rastrigin) {
+    double calculateCumulativeFitness(boolean rastrigin) {
         double totalFitness = 0.0;
         for (int i = 0; i < chromosomes.length; i++) {
             if (!rastrigin) {
@@ -124,10 +121,9 @@ public class Population {
 
     /**
      * @param rastrigin
-     * @return
-     * calculates the cdf's probability
+     * @return calculates the cdf's probability
      */
-    public double[] calculateProbFitness(boolean rastrigin) {
+    double[] calculateProbFitness(boolean rastrigin) {
         double totalFitness = calculateCumulativeFitness(rastrigin);
         for (int i = 0; i < chromosomes.length; i++) {
             fitnessProb[i] = fitnessProb[i] / totalFitness;
