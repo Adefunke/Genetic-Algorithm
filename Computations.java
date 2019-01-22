@@ -11,7 +11,7 @@ import java.util.Random;
  * @author FAkinola
  * this handles computations such as mutation --allelle, gray coding etc
  */
-public class Computations {
+class Computations {
 
     /**
      * @param bound picks a random number with the range of the bound
@@ -28,7 +28,7 @@ public class Computations {
      * @param bound
      * @return allelle; works for both symbolic and binary mutation
      */
-    public Integer getRandomAllele(int gene, int bound) {
+    Integer getRandomAllele(int gene, int bound) {
         int allele = aNumber(bound);
         if (allele == gene) {
             getRandomAllele(gene, bound);
@@ -68,7 +68,7 @@ public class Computations {
 
         gray.setGene(0, binary.getGene(0));
 
-        for (int i = 1; i < binary.geneLength; i++) {
+        for (int i = 1; i < ChromosomeSelection.geneLength; i++) {
 
             gray.setGene(i, xor_c(Character.forDigit(binary.getGene(i - 1), 10),
                     Character.forDigit(binary.getGene(i), 10)));
@@ -138,7 +138,7 @@ public class Computations {
         String grayString;
 
         ChromosomeSelection finalDec = new ChromosomeSelection(8, true);
-        for (int j = 0; j < finalDec.geneLength / 16; j++) {
+        for (int j = 0; j < ChromosomeSelection.geneLength / 16; j++) {
             boolean isNegative = gray.getGene(16 * j) == 1;
             boolean isbeginningOfNo = false;
             grayString = "";
@@ -164,7 +164,7 @@ public class Computations {
 
         binary.setGene(0, gray.getGene(0));
 
-        for (int i = 1; i < gray.geneLength; i++) {
+        for (int i = 1; i < ChromosomeSelection.geneLength; i++) {
             if (gray.getGene(i) == Character.getNumericValue('0'))
                 binary.setGene(i, binary.getGene(i - 1));
 
