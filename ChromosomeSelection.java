@@ -3,19 +3,24 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package geneticalgorithm;
-
 
 import java.util.Random;
 
 /**
  * @author FAkinola
  */
-class ChromosomeSelection {
+class ChromosomeSelection implements Cloneable{
     double fitness;
     static int geneLength ;
     int[] genes ;
-    int boundd;
+    private int boundd;
+
+    protected Object clone() throws CloneNotSupportedException {
+        ChromosomeSelection newChromosomeSelection = null;
+        newChromosomeSelection = (ChromosomeSelection) super.clone();
+        newChromosomeSelection.genes = this.genes.clone();
+        return newChromosomeSelection;
+    }
 
     ChromosomeSelection(int bound, int geneLength, boolean rastrigin) {
         Random rn = new Random();
@@ -38,15 +43,15 @@ class ChromosomeSelection {
 
     ChromosomeSelection(int bound, boolean rastrigin) {
         Random rn = new Random();
-        genes = new int[geneLength];
         boundd = bound;
+        genes = new int[geneLength];
         //Set genes randomly for each chromosome
         if (rastrigin) {
             for (int i = 0; i < geneLength / 16; i++) {
                 genes[i] = (rn.nextInt(91) - 45);
             }
         } else {
-            for (int i = 0; i < genes.length; i++) {
+            for (int i = 0; i < geneLength; i++) {
                 genes[i] = rn.nextInt(bound);
             }
         }
@@ -67,17 +72,10 @@ class ChromosomeSelection {
                 }
             }
         } else {
-            getChromosome();
-        }
-        return chromosome;
-    }/**
-     * @return converts the genes in a chromosome to a string
-     */
-    String getChromosome() {
-        String chromosome = "";
             for (int i = 0; i < geneLength; i++) {
                 chromosome += getGene(i);
             }
+        }
         return chromosome;
     }
 
@@ -97,12 +95,10 @@ class ChromosomeSelection {
         return fitness;
     }
 
-
     /**
-     * @return
-     * grafted from the rastrigin equation
+     * @return grafted from the rastrigin equation
      */
-   double calcFitnessRas() {
+    double calcFitnessRas() {
 
         fitness = 0;
         for (int i = 0; i < geneLength / 16; i++) {
@@ -112,7 +108,6 @@ class ChromosomeSelection {
         return fitness;
     }
 
-   
     int getGene(int index) {
         return genes[index];
     }

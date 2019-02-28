@@ -3,19 +3,29 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package geneticalgorithm;
 
 import java.util.Random;
 
 /**
  * @author FAkinola
  */
-class Population {
+class Population implements Cloneable {
     ChromosomeSelection[] chromosomes;
     private double[] fitnessProb;
     double fittest = 0;
     private int maxFit;
     int populationSize = 0;
+
+    protected Object clone() throws CloneNotSupportedException, NullPointerException {
+        Population newPopulation = null;
+        newPopulation = (Population) super.clone();
+        newPopulation.chromosomes = (ChromosomeSelection[]) this.chromosomes.clone();
+        for (int i = 0; i < this.chromosomes.length; i++) {
+            newPopulation.chromosomes[i] = (ChromosomeSelection) this.chromosomes[i].clone();
+        }
+        newPopulation.fitnessProb = this.fitnessProb.clone();
+        return newPopulation;
+    }
 
     //Initialize population
     void initializePopulation(int bound, int geneLength, boolean rastrigin, int popSize) {
@@ -127,7 +137,8 @@ class Population {
         double totalFitness = calculateCumulativeFitness(rastrigin);
         for (int i = 0; i < chromosomes.length; i++) {
             fitnessProb[i] = fitnessProb[i] / totalFitness;
-
+            GeneticAlgorithm geneticAlgorithm = new GeneticAlgorithm();
+            ++geneticAlgorithm.noOfEvaluation;
         }
         return fitnessProb;
     }
